@@ -1,0 +1,9 @@
+---
+- name: Setup Servers
+  hosts: servers
+  user: ubuntu
+  become: true
+
+  roles:
+    - role: nomad
+    - role: consul
