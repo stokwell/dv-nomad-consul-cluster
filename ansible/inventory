@@ -3,8 +3,8 @@ ansible_user=ubuntu
 
 [servers]
 
-server ansible_host= ansible_user=root ansible_ssh_private_key_file=~/.ssh/linode
+server ansible_host=139.162.187.225 ansible_user=root ansible_ssh_private_key_file=~/.ssh/linode
 
 [clients]
 
-client ansible_host= ansible_user=root ansible_ssh_private_key_file=~/.ssh/linode
+client ansible_host=172.104.253.107 ansible_user=root ansible_ssh_private_key_file=~/.ssh/linode

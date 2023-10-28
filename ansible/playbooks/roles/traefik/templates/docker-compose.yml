@@ -1,5 +1,8 @@
 version: "3.3"
 
+networks:
+  web:
+
 services:
   traefik:
     image: "traefik:v2.10"
@@ -19,6 +22,7 @@ services:
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
   octokid:
     image: stokwell/octokid:0.1
     container_name: octokid_sinatra_app
@@ -32,5 +36,86 @@ services:
       - "traefik.http.routers.octokid.rule=Host(`octokid.stokwell.cloud`)"
       - "traefik.http.routers.octokid.entrypoints=websecure"
       - "traefik.http.routers.octokid.tls.certresolver=myresolver"
-networks:
-  web:
+
+  # dv-rails:
+  #   image: stokwell/dv:3.0
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - .:/app
+  #     - gem_cache:/usr/local/bundle/gems
+  #   env_file: .env
+  #   environment:
+  #     RAILS_ENV: production
+  #     RAILS_SERVE_STATIC_FILES: 1
+  #     DATABASE_HOST: postgres
+  #     DATABASE_USER: dbuser
+  #     DATABASE_PASSWORD: hbZkzny5xrvVH
+  #     REDIS_HOST: redis
+  #     REDIS_URL: redis://redis:6379/
+  #     SECRET_KEY_BASE: '940c32722b7ee37d6aeb95e1c647d6460b5f47b6b5aae975e7d9dde1557fc7f01531884aa7aad9c2c2a06ce2760f06fd85d11fd9ea7168d42b5345da12731e26'
+  #   entrypoint: ./entrypoints/docker-entrypoint.sh
+
+  # postgres:
+  #   image: postgres:12
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+  #   environment:
+  #     - POSTGRES_PASSWORD=hbZkzny5xrvVH
+  #     - POSTGRES_USER=dbuser
+  #     - POSTGRES_DB=dv
+
+  # pgbouncer:
+  #   image: edoburu/pgbouncer
+  #   environment:
+  #     - DB_USER=dbuser
+  #     - DB_PASSWORD=hbZkzny5xrvVH
+  #     - DB_HOST=postgres
+  #     - DB_NAME=dv
+  #     - POOL_MODE=transaction
+  #     - ADMIN_USERS=postgres,dbuser
+  #   depends_on:
+  #     - postgres
+
+  # pghero: 
+  #   image: ankane/pghero
+  #   environment:
+  #     - DATABASE_URL=postgres://dbuser:hbZkzny5xrvVH@postgres:5432/dv
+  #   ports:
+  #     - 8080:8080
+  #   depends_on: 
+  #     - postgres
+
+  # redis:
+  #   image: redis:6
+  #   command: redis-server --databases 8196
+  #   ports:
+  #     - 127.0.0.1:6379:6379
+
+  # sidekiq:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - dv-rails
+  #     - postgres
+  #     - redis
+  #   volumes:
+  #     - .:/app
+  #     - gem_cache:/usr/local/bundle/gems
+  #   environment:
+  #     RAILS_ENV: production
+  #     REDIS_HOST: redis
+  #     REDIS_URL: redis://redis:6379/
+  #     SECRET_KEY_BASE: '940c32722b7ee37d6aeb95e1c647d6460b5f47b6b5aae975e7d9dde1557fc7f01531884aa7aad9c2c2a06ce2760f06fd85d11fd9ea7168d42b5345da12731e26'
+  #   entrypoint: ./entrypoints/sidekiq-entrypoint.sh
+
+# volumes:
+#   gem_cache:
+#   pg_data:
+#   node_modules:
+
+
