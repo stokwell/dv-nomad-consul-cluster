@@ -6,12 +6,12 @@ variable "root_pass" {}
 
 variable "server_type" {
   description = ""
-  default = "g6-standard-4"
+  default = "g6-standard-1"
 }
 
 variable "client_type" {
   description = ""
-  default = "g6-standard-4"
+  default = "g6-standard-1"
 }
 
 variable "server_count" {
